@@ -1,5 +1,6 @@
 package com.faroukbakre.farbaksshop.filters;
 
+import com.faroukbakre.farbaksshop.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -23,9 +24,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
+    private final JwtUtil jwtUtil;
 
+    public TokenAuthenticationFilter(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
 
-    private final String SECRET_KEY = "23456432345";
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -64,28 +68,14 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getId(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody();
-
         // Extract information from the token
-        return claims.getSubject();
+        return this.jwtUtil.extractId(token);
     }
 
     private Authentication validateToken(String token) {
         try {
-            // Parse and validate the token
-            Claims claims = Jwts.parser()
-                    .setSigningKey(SECRET_KEY)
-                    .parseClaimsJws(token)
-                    .getBody();
-
-            // Extract information from the token
-
-
-            String username = claims.getSubject();
-            List<String> roles = claims.get("roles", List.class);
+            String username = this.getId(token);
+            List<String> roles = this.jwtUtil.extractRoles(token);
             // Create an Authentication object
             List<SimpleGrantedAuthority> authorities = roles.stream()
                     .map(SimpleGrantedAuthority::new)

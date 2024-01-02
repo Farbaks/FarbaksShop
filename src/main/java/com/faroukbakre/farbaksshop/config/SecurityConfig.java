@@ -2,6 +2,7 @@ package com.faroukbakre.farbaksshop.config;
 
 import com.faroukbakre.farbaksshop.exceptions.CustomAccessDeniedHandler;
 import com.faroukbakre.farbaksshop.filters.TokenAuthenticationFilter;
+import com.faroukbakre.farbaksshop.utils.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,18 @@ public class SecurityConfig {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    protected TokenAuthenticationFilter tokenAuthenticationFilter() {
+        return new TokenAuthenticationFilter(jwtUtil);
+    }
+    
     private static final String[] WHITE_LIST_URL = {
             "/users/hello",
             "/users/login",
@@ -64,7 +73,7 @@ public class SecurityConfig {
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                .addFilterBefore(new TokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
 
         return http.build();

@@ -12,6 +12,7 @@ import java.util.function.Function;
 
 @Component
 public class JwtUtil {
+
     @Value("${secret_key}")
     private String SECRET_KEY;
     private static final long EXPIRATION_TIME = 864_000_000;
@@ -53,7 +54,14 @@ public class JwtUtil {
     }
 
     public String extractId(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody().getSubject();
+    }
+
+    public List<String> extractRoles(String token) {
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().get("roles", List.class);
     }
 
 }
