@@ -1,6 +1,7 @@
 package com.faroukbakre.farbaksshop.exceptions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -12,13 +13,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@RequiredArgsConstructor
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     private final ObjectMapper objectMapper;
-
-    public CustomAccessDeniedHandler(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,

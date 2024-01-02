@@ -23,11 +23,9 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final ObjectMapper objectMapper;
+    
+    private final JwtUtil jwtUtil;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
