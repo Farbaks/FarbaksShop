@@ -17,7 +17,7 @@ public class JwtUtil {
     private static final long EXPIRATION_TIME = 864_000_000;
 
     public String generateToken(User user) {
-        List<String> roles = Arrays.asList(String.valueOf(user.getRole()));
+        List<String> roles = Arrays.asList(String.valueOf(user.getRole().getName()));
         return createToken(String.valueOf(user.getId()), roles);
     }
 

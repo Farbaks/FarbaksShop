@@ -2,6 +2,7 @@ package com.faroukbakre.farbaksshop.exceptions;
 
 import com.faroukbakre.farbaksshop.dto.DefaultResponseDTO;
 import com.faroukbakre.farbaksshop.exceptions.CustomException;
+import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

@@ -5,6 +5,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.flywaydb.core.internal.util.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,17 +22,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-@RequiredArgsConstructor
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String SECRET_KEY = "23456432345";
+
+    private final String SECRET_KEY = "23456432345";
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        System.out.println("Got here!!!");
-        System.out.println("TokenAuthenticationFilter invoked for path: " + request.getRequestURI());
         // Extract token from the request header
         String token = extractToken(request);
 
@@ -84,9 +82,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     .getBody();
 
             // Extract information from the token
+
+
             String username = claims.getSubject();
             List<String> roles = claims.get("roles", List.class);
-
             // Create an Authentication object
             List<SimpleGrantedAuthority> authorities = roles.stream()
                     .map(SimpleGrantedAuthority::new)
@@ -95,8 +94,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             return new UsernamePasswordAuthenticationToken(username, null, authorities);
 
         } catch (ExpiredJwtException e) {
-            // Handle token expiration
-            // You may choose to refresh the token or log the user out
             return null;
         } catch (Exception e) {
             // Handle other exceptions
