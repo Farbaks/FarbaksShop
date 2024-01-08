@@ -2,10 +2,12 @@ package com.faroukbakre.farbaksshop.services;
 
 import com.faroukbakre.farbaksshop.dto.*;
 import com.faroukbakre.farbaksshop.entities.*;
+import com.faroukbakre.farbaksshop.exceptions.CustomException;
 import com.faroukbakre.farbaksshop.factories.Order_DTO_Factory;
 import com.faroukbakre.farbaksshop.factories.Product_DTO_Factory;
 import com.faroukbakre.farbaksshop.repositories.*;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,10 +30,7 @@ public class OrderService {
 
         String userId = (String) request.getAttribute("userId");
         User user = this.userRepository.findById(Integer.valueOf(userId)).orElse(null);
-
-        if(user == null) {
-            return new DefaultResponseDTO(401, "Account does not exist.");
-        }
+        if(user == null) throw new CustomException("Account does not exist.", 400, HttpStatus.OK);
 
         float totalAmount = 0;
         List<Map<String, Object>> orderItems = new ArrayList<>();
@@ -40,9 +39,7 @@ public class OrderService {
         for (NewOrderItemsRequestDTO order : data.getOrders())
         {
             Product product = this.productRepository.findByIdAndQuantityGreaterThanEqual(order.getProductId(), order.getQuantity());
-            if(product == null) {
-                return new DefaultResponseDTO(401, "One or more products are not in stock.");
-            }
+            if(product == null) throw new CustomException("One or more products are not in stock.", 400, HttpStatus.OK);
 
             Map<String, Object> item = new HashMap<>();
 
@@ -58,7 +55,6 @@ public class OrderService {
             totalAmount += subAmount;
         }
 
-        System.out.println("Got here");
 
         // Insert into order table and Initialize status to 'processing'
         Order newOrder = new Order();
@@ -90,9 +86,7 @@ public class OrderService {
         for (NewOrderItemsRequestDTO orderItem : data.getOrders())
         {
             Product product = this.productRepository.findById(orderItem.getProductId()).orElse(null);
-            if(product == null) {
-                return new DefaultResponseDTO(401, "An error occurred.");
-            }
+            if(product == null) throw new CustomException("An error occurred.", 400, HttpStatus.OK);
             int newQuantity = product.getQuantity() - orderItem.getQuantity();
             product.setQuantity(newQuantity);
             this.productRepository.save(product);
@@ -149,10 +143,7 @@ public class OrderService {
     public DefaultResponseDTO getOneOrder(int orderId) {
 
         Order order = this.orderRepository.findById(orderId).orElse(null);
-
-        if(order == null) {
-            return new DefaultResponseDTO(401, "Order does not exist.");
-        }
+        if(order == null) throw new CustomException("Order does not exist.", 400, HttpStatus.OK);
 
         return this.orderMapper.createOrderResponseDTO(order, "Order details fetched successful.");
     }
@@ -160,19 +151,13 @@ public class OrderService {
     public DefaultResponseDTO assignOrderToDriver(int orderId, AssignOrderRequestDTO data) {
 
         Order order = this.orderRepository.findById(orderId).orElse(null);
-        if(order == null) {
-            return new DefaultResponseDTO(401, "Order does not exist.");
-        }
+        if(order == null) throw new CustomException("Order does not exist.", 400, HttpStatus.OK);
 
         User driver = this.userRepository.findByIdAndRoleId(data.getDriverId(), 2);
-        
-        if(driver == null) {
-            return new DefaultResponseDTO(401, "Driver does not exist.");
-        }
+        if(driver == null) throw new CustomException("Driver does not exist.", 400, HttpStatus.OK);
 
         order.setDriver(driver);
         order.setStatus("shipped");
-
         this.orderRepository.save(order);
 
         return this.orderMapper.createOrderResponseDTO(order, "Order assigned successfully.");
@@ -181,12 +166,9 @@ public class OrderService {
     public DefaultResponseDTO updateOrderStatus(int orderId, EditOrderRequestDTO data) {
 
         Order order = this.orderRepository.findById(orderId).orElse(null);
-        if(order == null) {
-            return new DefaultResponseDTO(401, "Order does not exist.");
-        }
+        if(order == null) throw new CustomException("Order does not exist.", 400, HttpStatus.OK);
 
         order.setStatus(data.getStatus());
-
         this.orderRepository.save(order);
 
         return this.orderMapper.createOrderResponseDTO(order, "Order status updated successfully.");

@@ -4,11 +4,13 @@ import com.faroukbakre.farbaksshop.dto.*;
 import com.faroukbakre.farbaksshop.entities.Address;
 import com.faroukbakre.farbaksshop.entities.Role;
 import com.faroukbakre.farbaksshop.entities.User;
+import com.faroukbakre.farbaksshop.exceptions.CustomException;
 import com.faroukbakre.farbaksshop.factories.User_DTO_Factory;
 import com.faroukbakre.farbaksshop.repositories.AddressRepository;
 import com.faroukbakre.farbaksshop.repositories.RoleRepository;
 import com.faroukbakre.farbaksshop.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,24 +31,15 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final AddressRepository addressRepository;
 
-    public String helloWorld() {
-        return "Hello World";
-    }
     public DefaultResponseDTO createUser(NewUserRequestDTO data) {
 
         // Check if email exists
         User checkUserEmail = this.userRepository.findByEmailAddress(data.getEmailAddress());
-
-        if(checkUserEmail != null) {
-            return new DefaultResponseDTO(401, "Account with email already exists.");
-        }
+        if(checkUserEmail != null) throw new CustomException("Account with email already exists.", 400, HttpStatus.OK);
 
         // Check if phone number exists
         User checkUserPhoneNumber = this.userRepository.findByPhoneNumber(data.getPhoneNumber());
-
-        if(checkUserPhoneNumber != null) {
-            return new DefaultResponseDTO(401, "Account with phone number already exists.");
-        }
+        if(checkUserPhoneNumber != null) throw new CustomException("Account with phone number already exists.", 400, HttpStatus.OK);
 
         // Create new user
         User newUser = new User();
@@ -79,12 +72,10 @@ public class UserService {
     public DefaultResponseDTO loginUser(LoginUserRequestDTO data) {
         User user = this.userRepository.findByEmailAddress(data.getEmailAddress());
 
-        if(user == null) {
-            return new DefaultResponseDTO(401, "Account does not exist.");
-        }
+        if(user == null) throw new CustomException("Account does not exist.", 400, HttpStatus.OK);
 
         if (!passwordEncoder.matches(data.getPassword(), user.getPassword())) {
-            return new DefaultResponseDTO(401, "Incorrect password.");
+            throw new CustomException("Incorrect password.", 400, HttpStatus.OK);
         }
 
         return this.userMapper.createUserResponseDTO(user, "User login successful.");
@@ -108,10 +99,7 @@ public class UserService {
         String userId = (String) request.getAttribute("userId");
 
         User user = this.userRepository.findById(Integer.valueOf(userId)).orElse(null);
-
-        if(user == null) {
-            return new DefaultResponseDTO(401, "Account does not exist.");
-        }
+        if(user == null) throw new CustomException("Account does not exist.", 400, HttpStatus.OK);
 
         return this.userMapper.createUserResponseDTO(user, "User details fetched successful.");
     }
@@ -119,10 +107,7 @@ public class UserService {
     public DefaultResponseDTO deleteUser(int userId) {
 
         User user = this.userRepository.findById(userId).orElse(null);
-
-        if(user == null) {
-            return new DefaultResponseDTO(401, "User does not exist.");
-        }
+        if(user == null) throw new CustomException("Account does not exist.", 400, HttpStatus.OK);
 
         this.userRepository.deleteById(userId);
 

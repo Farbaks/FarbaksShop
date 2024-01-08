@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping("hello")
     public String helloWorld() {
-        return "Helllo Worlds!!";
+        return "Hello Worlds!!";
     }
 
     @PostMapping("")

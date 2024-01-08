@@ -1,10 +1,14 @@
-DROP TABLE IF EXISTS roles;
+-- ${flyway:timestamp}
+
+DROP TABLE IF EXISTS orderItems;
+DROP TABLE IF EXISTS orders;
+
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS categories;
+
 DROP TABLE IF EXISTS addresses;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS categories;
-DROP TABLE IF EXISTS products;
-DROP TABLE IF EXISTS orders;
-DROP TABLE IF EXISTS orderItems;
+DROP TABLE IF EXISTS roles;
 
 CREATE TABLE roles
 (
@@ -22,7 +26,7 @@ CREATE TABLE users
     password VARCHAR(255) NOT NULL,
     roleId INTEGER NOT NULL,
 
-    FOREIGN KEY (roleId) REFERENCES roles(id) ON DELETE CASCADE
+    FOREIGN KEY (roleId) REFERENCES roles(id)
 );
 
 CREATE TABLE addresses
@@ -31,7 +35,7 @@ CREATE TABLE addresses
     addressLine TEXT NOT NULL,
     userId INTEGER NOT NULL,
 
-    FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (userId) REFERENCES users(id)
 );
 
 CREATE TABLE categories
@@ -50,7 +54,7 @@ CREATE TABLE products
     color VARCHAR(20) NOT NULL,
     categoryId INTEGER NOT NULL,
 
-    FOREIGN KEY (categoryId) REFERENCES categories(id) ON DELETE CASCADE
+    FOREIGN KEY (categoryId) REFERENCES categories(id)
 );
 
 CREATE TABLE orders
@@ -62,8 +66,8 @@ CREATE TABLE orders
     status VARCHAR(20) NOT NULL,
     driverId INTEGER,
 
-    FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (driverId) REFERENCES users(id) ON DELETE SET NULL
+    FOREIGN KEY (userId) REFERENCES users(id),
+    FOREIGN KEY (driverId) REFERENCES users(id)
 );
 
 CREATE TABLE orderItems
@@ -75,8 +79,8 @@ CREATE TABLE orderItems
     amount FLOAT NOT NULL,
     total FLOAT NOT NULL,
 
-    FOREIGN KEY (orderId) REFERENCES orders(id) ON DELETE CASCADE,
-    FOREIGN KEY (productId) REFERENCES products(id) ON DELETE CASCADE
+    FOREIGN KEY (orderId) REFERENCES orders(id),
+    FOREIGN KEY (productId) REFERENCES products(id)
 );
 
 INSERT INTO roles(name)

@@ -24,7 +24,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
-    
+
     private final JwtUtil jwtUtil;
 
     @Bean

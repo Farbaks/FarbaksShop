@@ -3,10 +3,12 @@ package com.faroukbakre.farbaksshop.services;
 import com.faroukbakre.farbaksshop.dto.*;
 import com.faroukbakre.farbaksshop.entities.Category;
 import com.faroukbakre.farbaksshop.entities.Product;
+import com.faroukbakre.farbaksshop.exceptions.CustomException;
 import com.faroukbakre.farbaksshop.factories.Product_DTO_Factory;
 import com.faroukbakre.farbaksshop.repositories.CategoryRepository;
 import com.faroukbakre.farbaksshop.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,9 +25,7 @@ public class ProductService {
     public DefaultResponseDTO createProduct(NewProductRequestDTO data) {
         Product checkProduct = this.productRepository.findByName(data.getName());
 
-        if(checkProduct != null) {
-            return new DefaultResponseDTO(401, "Product with name already exists.");
-        }
+        if(checkProduct != null) throw new CustomException("Product with name already exists.", 400, HttpStatus.OK);
 
         Product newProduct = new Product();
 
@@ -37,9 +37,7 @@ public class ProductService {
 
         // Set Category
         Category category = this.categoryRepository.findById(data.getCategoryId()).orElse(null);
-        if (category == null) {
-            return new DefaultResponseDTO(401, "Category does not exist.");
-        }
+        if (category == null) throw new CustomException("Category does not exist.", 400, HttpStatus.OK);
 
         newProduct.setCategory(category);
 
@@ -64,10 +62,7 @@ public class ProductService {
     public DefaultResponseDTO getOneProduct(int productId) {
 
         Product product = this.productRepository.findById(productId).orElse(null);
-
-        if(product == null) {
-            return new DefaultResponseDTO(401, "Product does not exist.");
-        }
+        if(product == null) throw new CustomException("Product does not exist.", 400, HttpStatus.OK);
 
         return this.productMapper.createProductResponseDTO(product, "Product details fetched successful.");
     }
@@ -76,32 +71,24 @@ public class ProductService {
 
         // Check if product id exists
         Product product = this.productRepository.findById(productId).orElse(null);
-
-        if(product == null) {
-            return new DefaultResponseDTO(401, "Product does not exist.");
-        }
+        if(product == null) throw new CustomException("Product does not exist.", 400, HttpStatus.OK);
 
         // Check if name is already in user
         Product checkProduct = this.productRepository.findByName(updateProduct.getName());
-
         if(checkProduct != null && checkProduct.getId() != productId) {
-            return new DefaultResponseDTO(401, "Product with name already exists.");
+            throw new CustomException("Product with name already exists.", 400, HttpStatus.OK);
         }
+
+        // Check if Category exists
+        Category category = this.categoryRepository.findById(updateProduct.getCategoryId()).orElse(null);
+        if (category == null) throw new CustomException("Category does not exist.", 400, HttpStatus.OK);
 
         product.setName(updateProduct.getName());
         product.setQuantity(updateProduct.getQuantity());
         product.setAmount(updateProduct.getAmount());
         product.setDescription(updateProduct.getDescription());
         product.setColor(updateProduct.getColor());
-
-        // Set Category
-        Category category = this.categoryRepository.findById(updateProduct.getCategoryId()).orElse(null);
-        if (category == null) {
-            return new DefaultResponseDTO(401, "Category does not exist.");
-        }
-
         product.setCategory(category);
-
         this.productRepository.save(product);
 
         return this.productMapper.createProductResponseDTO(product, "Product updated successfully.");
@@ -111,10 +98,7 @@ public class ProductService {
     public DefaultResponseDTO deleteProduct(int productId) {
 
         Product product = this.productRepository.findById(productId).orElse(null);
-
-        if(product == null) {
-            return new DefaultResponseDTO(401, "Product does not exist.");
-        }
+        if(product == null) throw new CustomException("Product does not exist.", 400, HttpStatus.OK);
 
         this.productRepository.deleteById(productId);
 

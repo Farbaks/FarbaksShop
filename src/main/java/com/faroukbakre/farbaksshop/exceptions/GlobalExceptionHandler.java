@@ -19,7 +19,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<DefaultResponseDTO> handleCustomException(CustomException ex) {
         HttpStatus status = ex.getStatus() != null ? ex.getStatus() : HttpStatus.BAD_REQUEST;
-        DefaultResponseDTO errorResponseDTO = ex.getBody();
+        DefaultResponseDTO errorResponseDTO = new DefaultResponseDTO();
+        errorResponseDTO.setMessage(ex.getMessage());
+        errorResponseDTO.setStatusCode(ex.getBodyStatusCode());
         return new ResponseEntity<>(errorResponseDTO, status);
     }
 

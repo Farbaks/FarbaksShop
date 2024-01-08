@@ -7,16 +7,16 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class CustomException extends RuntimeException {
 
-    DefaultResponseDTO body;
+    int bodyStatusCode;
     HttpStatus status;
     public CustomException(String message) {
         super(message);
         this.status = null; // Default status code
     }
 
-    public CustomException(String message, DefaultResponseDTO body, HttpStatus status) {
+    public CustomException(String message, int bodyStatusCode, HttpStatus status) {
         super(message);
-        this.body = body;
+        this.bodyStatusCode = bodyStatusCode;
         this.status = status;
     }
 
