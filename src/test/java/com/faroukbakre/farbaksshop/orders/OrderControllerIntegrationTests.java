@@ -1,4 +1,4 @@
-package com.faroukbakre.farbaksshop.products;
+package com.faroukbakre.farbaksshop.orders;
 
 import com.faroukbakre.farbaksshop.config.SecurityConfig;
 import com.faroukbakre.farbaksshop.entities.*;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ComponentScan(basePackages = "com.faroukbakre.farbaksshop")
 @AutoConfigureMockMvc
-public class ProductControllerIntegrationTests {
+public class OrderControllerIntegrationTests {
     @Autowired
     MockMvc mockMvc;
 
@@ -31,6 +31,12 @@ public class ProductControllerIntegrationTests {
 
     @Autowired
     JwtUtil jwtUtil;
+
+    @Autowired
+    OrderRepository orderRepository;
+
+    @Autowired
+    OrderItemRepository orderItemRepository;
 
     @Autowired
     ProductRepository productRepository;
@@ -50,48 +56,15 @@ public class ProductControllerIntegrationTests {
     @Autowired
     RoleRepository roleRepository;
 
-    String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZXMiOlsiYWRtaW4iXSwiaWF0IjoxNzA0NjIwNzY3LCJleHAiOjE3MDU0ODQ3Njd9.FibPwDo0ypeUHCU37Rempjb7FPWY9sMAy9P6Q6CMgxY";
+    String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZXMiOlsiY3VzdG9tZXIiXSwiaWF0IjoxNzA0ODMzMDk2LCJleHAiOjE3MDU2OTcwOTZ9.A5V7xETxc1dk_oZJ071NBANWIsYjB6ARd4Hfxl_pd8Y";
 
     @Test
-    public void when_ProductDoesNotExistDuringCreation_Expect_Success() throws Exception {
-        this.productRepository.deleteAll();
-
+    public void when_CustomerOrdersProduct_Expect_Success () throws Exception {
         this.saveTestUser();
-
-        String json_productToCreate =
-                "{\n  " +
-                    "\"name\": \"Green Puffer Jacket\",\n  " +
-                    "\"quantity\": 10,\n  " +
-                    "\"amount\": 24.5,\n  " +
-                    "\"description\": \"This is the description for this green puffer jacket\",\n  " +
-                    "\"categoryId\": 1,\n  " +
-                    "\"color\": \"Green\"\n" +
-                "}";
-
-        mockMvc
-                .perform(post("/products")
-                        .header("AUTHORIZATION", token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json_productToCreate)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.statusCode").value("200"))
-                .andExpect(jsonPath("$.message").value("Product creation successful."));
-    }
-
-    @Test
-    public void when_ProductNameExistsDuringCreation_Expect_ErrorMessage() throws Exception {
-        this.productRepository.deleteAll();
-
-        this.saveTestUser();
-
         Category category = this.categoryRepository.findById(1).orElse(null);
-
-        // Save test product
         Product newProduct = new Product();
         newProduct.setName("Green Puffer Jacket");
-        newProduct.setQuantity(2);
+        newProduct.setQuantity(4);
         newProduct.setCategory(category);
         newProduct.setAmount(100);
         newProduct.setColor("Red");
@@ -99,26 +72,26 @@ public class ProductControllerIntegrationTests {
 
         this.productRepository.save(newProduct);
 
-        String json_productToCreate =
+        String json_orderToCreate =
                 "{\n  " +
-                        "\"name\": \"Green Puffer Jacket\",\n  " +
-                        "\"quantity\": 10,\n  " +
-                        "\"amount\": 24.5,\n  " +
-                        "\"description\": \"This is the description for this green puffer jacket\",\n  " +
-                        "\"categoryId\": 1,\n  " +
-                        "\"color\": \"Green\"\n" +
-                        "}";
+                    "\"orders\": [\n    " +
+                        "{\n      " +
+                            "\"productId\": 1,\n      " +
+                            "\"quantity\": 3\n    " +
+                        "}\n  " +
+                    "]\n" +
+                "}";
 
         mockMvc
-                .perform(post("/products")
+                .perform(post("/orders")
                         .header("AUTHORIZATION", token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(json_productToCreate)
+                        .content(json_orderToCreate)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.statusCode").value("400"))
-                .andExpect(jsonPath("$.message").value("Product with name already exists."));
+                .andExpect(jsonPath("$.statusCode").value("200"))
+                .andExpect(jsonPath("$.message").value("Order created successfully."));
 
     }
 
@@ -126,7 +99,7 @@ public class ProductControllerIntegrationTests {
         this.addressRepository.deleteAll();
         this.userRepository.deleteAll();
 
-        Role role = this.roleRepository.findById(1).orElse(null);
+        Role role = this.roleRepository.findById(3).orElse(null);
 
         User newUser = new User();
         newUser.setFirstName("Farouk");

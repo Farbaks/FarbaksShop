@@ -1,6 +1,5 @@
 package com.faroukbakre.farbaksshop.exceptions;
 
-import com.faroukbakre.farbaksshop.dto.DefaultResponseDTO;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 

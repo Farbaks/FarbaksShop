@@ -1,9 +1,8 @@
 package com.faroukbakre.farbaksshop.controllers;
 
-import com.faroukbakre.farbaksshop.dto.DefaultResponseDTO;
-import com.faroukbakre.farbaksshop.dto.EditProductRequestDTO;
-import com.faroukbakre.farbaksshop.dto.NewProductRequestDTO;
-import com.faroukbakre.farbaksshop.dto.NewUserRequestDTO;
+import com.faroukbakre.farbaksshop.dto.responses.DefaultResponseDTO;
+import com.faroukbakre.farbaksshop.dto.requests.EditProductRequestDTO;
+import com.faroukbakre.farbaksshop.dto.requests.NewProductRequestDTO;
 import com.faroukbakre.farbaksshop.services.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;

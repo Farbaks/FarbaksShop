@@ -1,18 +1,13 @@
 package com.faroukbakre.farbaksshop.filters;
 
 import com.faroukbakre.farbaksshop.utils.JwtUtil;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import lombok.RequiredArgsConstructor;
 import org.flywaydb.core.internal.util.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;

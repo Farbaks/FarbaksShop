@@ -1,9 +1,9 @@
 package com.faroukbakre.farbaksshop.controllers;
 
-import com.faroukbakre.farbaksshop.dto.DefaultResponseDTO;
-import com.faroukbakre.farbaksshop.dto.LoginUserRequestDTO;
+import com.faroukbakre.farbaksshop.dto.responses.DefaultResponseDTO;
+import com.faroukbakre.farbaksshop.dto.requests.LoginUserRequestDTO;
 import com.faroukbakre.farbaksshop.services.UserService;
-import com.faroukbakre.farbaksshop.dto.NewUserRequestDTO;
+import com.faroukbakre.farbaksshop.dto.requests.NewUserRequestDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

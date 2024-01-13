@@ -5,7 +5,6 @@ import com.faroukbakre.farbaksshop.filters.TokenAuthenticationFilter;
 import com.faroukbakre.farbaksshop.utils.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

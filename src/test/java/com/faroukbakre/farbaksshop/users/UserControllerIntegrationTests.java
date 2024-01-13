@@ -1,12 +1,12 @@
 package com.faroukbakre.farbaksshop.users;
 
 import com.faroukbakre.farbaksshop.config.SecurityConfig;
-import com.faroukbakre.farbaksshop.entities.Address;
-import com.faroukbakre.farbaksshop.entities.Role;
-import com.faroukbakre.farbaksshop.entities.User;
-import com.faroukbakre.farbaksshop.repositories.AddressRepository;
-import com.faroukbakre.farbaksshop.repositories.RoleRepository;
-import com.faroukbakre.farbaksshop.repositories.UserRepository;
+import com.faroukbakre.farbaksshop.models.entities.Address;
+import com.faroukbakre.farbaksshop.models.entities.Role;
+import com.faroukbakre.farbaksshop.models.entities.User;
+import com.faroukbakre.farbaksshop.models.repositories.AddressRepository;
+import com.faroukbakre.farbaksshop.models.repositories.RoleRepository;
+import com.faroukbakre.farbaksshop.models.repositories.UserRepository;
 import com.faroukbakre.farbaksshop.utils.JwtUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

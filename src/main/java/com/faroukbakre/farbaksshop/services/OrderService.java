@@ -1,11 +1,21 @@
 package com.faroukbakre.farbaksshop.services;
 
-import com.faroukbakre.farbaksshop.dto.*;
-import com.faroukbakre.farbaksshop.entities.*;
+import com.faroukbakre.farbaksshop.dto.requests.AssignOrderRequestDTO;
+import com.faroukbakre.farbaksshop.dto.requests.EditOrderRequestDTO;
+import com.faroukbakre.farbaksshop.dto.requests.NewOrderItemsRequestDTO;
+import com.faroukbakre.farbaksshop.dto.requests.NewOrderRequestDTO;
+import com.faroukbakre.farbaksshop.dto.responses.DefaultResponseDTO;
+import com.faroukbakre.farbaksshop.dto.responses.OrderResponseDTO;
 import com.faroukbakre.farbaksshop.exceptions.CustomException;
-import com.faroukbakre.farbaksshop.factories.Order_DTO_Factory;
-import com.faroukbakre.farbaksshop.factories.Product_DTO_Factory;
-import com.faroukbakre.farbaksshop.repositories.*;
+import com.faroukbakre.farbaksshop.dto.factories.Order_DTO_Factory;
+import com.faroukbakre.farbaksshop.models.entities.Order;
+import com.faroukbakre.farbaksshop.models.entities.OrderItem;
+import com.faroukbakre.farbaksshop.models.entities.Product;
+import com.faroukbakre.farbaksshop.models.entities.User;
+import com.faroukbakre.farbaksshop.models.repositories.OrderItemRepository;
+import com.faroukbakre.farbaksshop.models.repositories.OrderRepository;
+import com.faroukbakre.farbaksshop.models.repositories.ProductRepository;
+import com.faroukbakre.farbaksshop.models.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

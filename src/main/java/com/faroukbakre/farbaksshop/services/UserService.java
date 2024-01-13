@@ -1,14 +1,17 @@
 package com.faroukbakre.farbaksshop.services;
 
-import com.faroukbakre.farbaksshop.dto.*;
-import com.faroukbakre.farbaksshop.entities.Address;
-import com.faroukbakre.farbaksshop.entities.Role;
-import com.faroukbakre.farbaksshop.entities.User;
+import com.faroukbakre.farbaksshop.dto.requests.LoginUserRequestDTO;
+import com.faroukbakre.farbaksshop.dto.requests.NewUserRequestDTO;
+import com.faroukbakre.farbaksshop.dto.responses.DefaultResponseDTO;
+import com.faroukbakre.farbaksshop.dto.responses.UserResponseDTO;
+import com.faroukbakre.farbaksshop.models.entities.Address;
+import com.faroukbakre.farbaksshop.models.entities.Role;
+import com.faroukbakre.farbaksshop.models.entities.User;
 import com.faroukbakre.farbaksshop.exceptions.CustomException;
-import com.faroukbakre.farbaksshop.factories.User_DTO_Factory;
-import com.faroukbakre.farbaksshop.repositories.AddressRepository;
-import com.faroukbakre.farbaksshop.repositories.RoleRepository;
-import com.faroukbakre.farbaksshop.repositories.UserRepository;
+import com.faroukbakre.farbaksshop.dto.factories.User_DTO_Factory;
+import com.faroukbakre.farbaksshop.models.repositories.AddressRepository;
+import com.faroukbakre.farbaksshop.models.repositories.RoleRepository;
+import com.faroukbakre.farbaksshop.models.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

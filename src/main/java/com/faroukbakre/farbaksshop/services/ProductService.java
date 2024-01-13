@@ -1,12 +1,15 @@
 package com.faroukbakre.farbaksshop.services;
 
-import com.faroukbakre.farbaksshop.dto.*;
-import com.faroukbakre.farbaksshop.entities.Category;
-import com.faroukbakre.farbaksshop.entities.Product;
+import com.faroukbakre.farbaksshop.dto.requests.EditProductRequestDTO;
+import com.faroukbakre.farbaksshop.dto.requests.NewProductRequestDTO;
+import com.faroukbakre.farbaksshop.dto.responses.DefaultResponseDTO;
+import com.faroukbakre.farbaksshop.dto.responses.ProductResponseDTO;
+import com.faroukbakre.farbaksshop.models.entities.Category;
+import com.faroukbakre.farbaksshop.models.entities.Product;
 import com.faroukbakre.farbaksshop.exceptions.CustomException;
-import com.faroukbakre.farbaksshop.factories.Product_DTO_Factory;
-import com.faroukbakre.farbaksshop.repositories.CategoryRepository;
-import com.faroukbakre.farbaksshop.repositories.ProductRepository;
+import com.faroukbakre.farbaksshop.dto.factories.Product_DTO_Factory;
+import com.faroukbakre.farbaksshop.models.repositories.CategoryRepository;
+import com.faroukbakre.farbaksshop.models.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
