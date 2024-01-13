@@ -1,10 +1,8 @@
 package com.faroukbakre.farbaksshop.products;
 
 import com.faroukbakre.farbaksshop.config.SecurityConfig;
-import com.faroukbakre.farbaksshop.entities.*;
 import com.faroukbakre.farbaksshop.models.entities.*;
 import com.faroukbakre.farbaksshop.models.repositories.*;
-import com.faroukbakre.farbaksshop.repositories.*;
 import com.faroukbakre.farbaksshop.utils.JwtUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
